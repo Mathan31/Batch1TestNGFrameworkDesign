@@ -3,9 +3,14 @@ package pages;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.aventstack.extentreports.ExtentTest;
+
+import libraries.SeleniumWrapper;
 
 
 public class SalesPage extends MenuPage{
@@ -20,7 +25,16 @@ public class SalesPage extends MenuPage{
 	
 	private By statusTxt=By.xpath("//span[@title='Working - Contacted']");
 	private By savebtn=By.xpath("//button[@name='SaveEdit']");
-	
+	private WebDriver driver;
+	private SeleniumWrapper wrap;
+    
+    public SalesPage(WebDriver driver,ExtentTest node) {
+    	super(driver,node);
+    	this.driver = driver;
+    	this.node = node;
+    	wrap = new SeleniumWrapper(driver, node);
+    }
+    
 	public SalesPage clickOnLeadsLink() {
 		WebDriverWait oWait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		oWait.until(ExpectedConditions.elementToBeClickable(leadsLink));
@@ -31,17 +45,17 @@ public class SalesPage extends MenuPage{
 	}
 	
 	public SalesPage clickOnNewButton() {
-		driver.findElement(newBtn).click();
+		wrap.click(driver.findElement(newBtn), "New Button");
 		return this;
 	}
 	
 	public SalesPage enterLastName(String lastName) {
-		driver.findElement(lastnameTxt).sendKeys(lastName);
+		wrap.type(driver.findElement(lastnameTxt), lastName);
 		return this;
 	}
 	
 	public SalesPage enterCompanyName(String companyName) {
-		driver.findElement(companyTxt).sendKeys(companyName);
+		wrap.type(driver.findElement(companyTxt), companyName);
 		return this;
 	}
 	
@@ -63,7 +77,7 @@ public class SalesPage extends MenuPage{
 	
 		
 	public SalesPage clickOnSaveButton() {
-		driver.findElement(savebtn).click();
+		wrap.click(driver.findElement(savebtn), "Save Button");
 		return this;
 	} 
 	

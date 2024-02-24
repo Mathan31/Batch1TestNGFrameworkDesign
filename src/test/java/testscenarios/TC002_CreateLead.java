@@ -13,12 +13,17 @@ public class TC002_CreateLead extends BaseClass{
 	@BeforeTest
 	public void testCaseSetup() {
 		excelFileName = "TC002";
+		authors = "Yalini";
+		category = "Sanity";
+		testName = "Create Lead";
+		testDescription = "Create Lead using mandatory fields";
+		module = "Create lead";
 	}
 	
 			
 	@Test(priority = 2,dataProvider = "TestCaseData")
 	public void createSalesLeadWithmandatoryFields(String userName,String password) {
-		boolean result = new LoginPage()
+		boolean result = new LoginPage(driver,node)
 		.enterUserName(userName)
 		.enterPassword(password)
 		.clickLogin()

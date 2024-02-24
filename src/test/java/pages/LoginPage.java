@@ -1,6 +1,11 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import com.aventstack.extentreports.ExtentTest;
+
+import libraries.SeleniumWrapper;
 
 
 public class LoginPage extends MenuPage{
@@ -11,13 +16,22 @@ public class LoginPage extends MenuPage{
 	private By remembermeChBox=By.xpath("//label[text()='Remember me']");
 	private By forgotLink=By.id("forgot_password_link");
 	private By loginFailureMsg = By.cssSelector("#error");
+	private WebDriver driver;
+	private SeleniumWrapper wrap;
+    
+    public LoginPage(WebDriver driver,ExtentTest node) {
+    	super(driver,node);
+    	this.driver = driver;
+    	this.node = node;
+    	wrap = new SeleniumWrapper(driver, node);
+    }
 	
 	public boolean verifyLoginElement() {
-		if(driver.findElement(usernameTxt).isDisplayed() && 
-				driver.findElement(passwordTxt).isDisplayed() && 
-				driver.findElement(loginBtn).isDisplayed() && 
-				driver.findElement(remembermeChBox).isDisplayed() && 
-				driver.findElement(forgotLink).isDisplayed() ) {
+		if(wrap.verifyDisplayedwithReturn(driver.findElement(usernameTxt), "UserName") && 
+				wrap.verifyDisplayedwithReturn(driver.findElement(passwordTxt), "Password") && 
+				wrap.verifyDisplayedwithReturn(driver.findElement(loginBtn), "Login Button") && 
+				wrap.verifyDisplayedwithReturn(driver.findElement(remembermeChBox), "Remember Check Box") && 
+				wrap.verifyDisplayedwithReturn(driver.findElement(forgotLink), "Forgot Link") ) {
 			return true;
 		}else {
 			return false;
@@ -25,27 +39,28 @@ public class LoginPage extends MenuPage{
 	}
 	
 	public LoginPage enterUserName(String userName) {
-		driver.findElement(usernameTxt).sendKeys(userName);
+		wrap.type(driver.findElement(usernameTxt), userName);
 		return this;
 	}
 	
 	public LoginPage enterPassword(String password) {
-		driver.findElement(passwordTxt).sendKeys(password);
+		wrap.type(driver.findElement(passwordTxt), password);
 		return this;
 	}
 	
 	public HomePage clickLogin() {
-		driver.findElement(loginBtn).click();
-		return new HomePage();
+		wrap.click(driver.findElement(loginBtn), "Login Button");
+		return new HomePage(driver,node);
 	}
 	
 	public LoginPage clickLoginWithinvalidCredential() {
-		driver.findElement(loginBtn).click();
+		wrap.click(driver.findElement(loginBtn), "Login Button");
 		return this;
 	}
 	
 	public boolean validateErrorMsg() {
-		if(driver.findElement(loginFailureMsg).isDisplayed()) {
+		
+		if(wrap.verifyDisplayedwithReturn(driver.findElement(loginFailureMsg), "Login failure msg")) {
 			return true;
 		}else {
 			return false;

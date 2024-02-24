@@ -2,7 +2,11 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import com.aventstack.extentreports.ExtentTest;
+
 import base.BaseClass;
+import libraries.SeleniumWrapper;
 
 public class MenuPage extends BaseClass{
 	
@@ -11,9 +15,17 @@ public class MenuPage extends BaseClass{
 	protected By salesLink = By.xpath("//span[@part='formatted-rich-text']/p[text()='Sales']");
 	protected By logoutLink = By.xpath("//a[text()='Log Out']");
 	protected By userImg=By.xpath("(//span[@class='uiImage']/parent::div[@data-aura-class='forceEntityIcon'])[1]");
-
+    private WebDriver driver;
+    private SeleniumWrapper wrap;
+    
+    public MenuPage(WebDriver driver,ExtentTest node) {
+    	this.driver = driver;
+    	this.node = node;
+    	wrap = new SeleniumWrapper(driver, node);
+    }
+    
 	public MenuPage clickOnAppLauncher() {
-		driver.findElement(applauncherIcon).click(); 
+		wrap.click(driver.findElement(applauncherIcon), "App Launcher");
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -24,35 +36,29 @@ public class MenuPage extends BaseClass{
 	}
 	
 	public MenuPage clickOnViewAll() {
-		driver.findElement(viewAllLink).click();
+		wrap.click(driver.findElement(viewAllLink), "View All Link");
 		return this;
 	}
 	
 	public SalesPage clickOnSales() { 
-		driver.findElement(salesLink).click();
-		return new SalesPage();
+		wrap.click(driver.findElement(salesLink), "Sales Link");
+		return new SalesPage(driver,node);
 	}
 	
 	public MenuPage clickUserImg()   {
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		driver.findElement(userImg).click();
+		wrap.click(driver.findElement(userImg), "User Image");
 		return this;
 	}
 	
 	public LoginPage clickLogout() {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		driver.findElement(logoutLink).click();
-		return new LoginPage();
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		wrap.click(driver.findElement(logoutLink), "Logout Link");
+		return new LoginPage(driver,node);
 	}
 	
 	

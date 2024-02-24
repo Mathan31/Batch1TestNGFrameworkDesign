@@ -12,12 +12,17 @@ public class TC001_Login extends BaseClass{
 	@BeforeTest
 	public void testCaseSetup() {
 		excelFileName = "TC001";
+		authors = "Sathya";
+		category = "Smoke";
+		testName = "Salesforce Login";
+		testDescription = "Salesforce Login validation";
+		module = "Login";
 	}
 	
 		
 	@Test(priority = 1)
 	public void loginFieldValidation() {
-		boolean result = new LoginPage()
+		boolean result = new LoginPage(driver,node)
 		.verifyLoginElement();
 		Assert.assertTrue(result);
 	}
@@ -25,7 +30,7 @@ public class TC001_Login extends BaseClass{
 	@Test(priority = 2,dataProvider = "TestCaseData")
 	public void loginWithValidCredential(String userName,String password) {
 		
-		boolean result = new LoginPage()
+		boolean result = new LoginPage(driver,node)
 		.enterUserName(userName)
 		.enterPassword(password)
 		.clickLogin()
@@ -38,7 +43,7 @@ public class TC001_Login extends BaseClass{
 	
 	@Test(priority = 3)
 	public void loginWithInValidCredential() {
-		boolean result = new LoginPage()
+		boolean result = new LoginPage(driver,node)
 		.enterUserName("sathya@systemz.com")
 		.enterPassword("testing123")
 		.clickLoginWithinvalidCredential()
